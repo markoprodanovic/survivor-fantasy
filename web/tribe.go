@@ -45,6 +45,8 @@ func (app *AppHandler) handleGetTribes(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	w.Header().Set("Content-Range", strconv.Itoa(len(tribes)))
+
 	respondWithJSON(w, r, http.StatusOK, tribes)
 }
 
