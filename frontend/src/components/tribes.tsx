@@ -9,14 +9,16 @@ import {
   Show,
   SimpleShowLayout,
   SelectInput,
+  EditButton,
 } from "react-admin";
 
 export const TribesList = (props: any) => (
   <List {...props}>
-    <Datagrid rowClick="edit">
+    <Datagrid bulkActionButtons={false}>
       <TextField source="id" />
       <TextField source="name" />
       <TextField source="colour" />
+      <EditButton />
     </Datagrid>
   </List>
 );
@@ -40,7 +42,6 @@ export const TribesCreate = (props: any) => (
 export const TribesEdit = (props: any) => (
   <Edit {...props}>
     <SimpleForm>
-      <TextField source="id" disabled />
       <TextInput source="name" />
       <SelectInput
         source="colour"
