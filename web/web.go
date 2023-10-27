@@ -19,11 +19,19 @@ func MakeMuxRouter(dbSes *dbr.Session) http.Handler {
 
 	muxRouter := mux.NewRouter()
 
+	// tribes
 	muxRouter.HandleFunc("/api/v1/tribes", app.handleGetTribes).Methods("GET")
 	muxRouter.HandleFunc("/api/v1/tribes", app.handleCreateTribe).Methods("POST")
 	muxRouter.HandleFunc("/api/v1/tribes/{tribeID:[0-9]}", app.handleGetOneTribe).Methods("GET")
 	muxRouter.HandleFunc("/api/v1/tribes/{tribeID:[0-9]}", app.handleDeleteTribe).Methods("DELETE")
 	muxRouter.HandleFunc("/api/v1/tribes/{tribeID:[0-9]}", app.handleUpdateTribe).Methods("PUT")
+
+	// players
+	muxRouter.HandleFunc("/api/v1/players", app.handleGetPlayers).Methods("GET")
+	muxRouter.HandleFunc("/api/v1/players", app.handleCreatePlayer).Methods("POST")
+	muxRouter.HandleFunc("/api/v1/players/{playerID:[0-9]}", app.handleGetOnePlayer).Methods("GET")
+	muxRouter.HandleFunc("/api/v1/players/{playerID:[0-9]}", app.handleDeletePlayer).Methods("DELETE")
+	muxRouter.HandleFunc("/api/v1/players/{playerID:[0-9]}", app.handleUpdatePlayer).Methods("PUT")
 
 	// Frontend HTML and related assets
 	if Version == "dev" {
