@@ -33,6 +33,20 @@ func MakeMuxRouter(dbSes *dbr.Session) http.Handler {
 	muxRouter.HandleFunc("/api/v1/players/{playerID:[0-9]}", app.handleDeletePlayer).Methods("DELETE")
 	muxRouter.HandleFunc("/api/v1/players/{playerID:[0-9]}", app.handleUpdatePlayer).Methods("PUT")
 
+	// episodes (with points)
+	muxRouter.HandleFunc("/api/v1/episodes", app.handleGetEpisodesWithPoints).Methods("GET")
+	muxRouter.HandleFunc("/api/v1/episodes", app.handleCreateEpisodeWithPoints).Methods("POST")
+	muxRouter.HandleFunc("/api/v1/episodes/{episodeID:[0-9]}", app.handleGetOneEpisodesWithPoints).Methods("GET")
+	muxRouter.HandleFunc("/api/v1/episodes/{episodeID:[0-9]}", app.handleDeleteEpisodeWithPoints).Methods("DELETE")
+	// muxRouter.HandleFunc("/api/v1/episodes/{episodeID:[0-9]}", app.handleUpdateEpisodeWithPoints).Methods("UPDATE")
+
+	// users
+	muxRouter.HandleFunc("/api/v1/users", app.handleGetUsersWithPicks).Methods("GET")
+	muxRouter.HandleFunc("/api/v1/users", app.handleCreateUserWithPicks).Methods("POST")
+	muxRouter.HandleFunc("/api/v1/users/{userID:[0-9]}", app.handleGetOneUser).Methods("GET")
+	muxRouter.HandleFunc("/api/v1/users/{userID:[0-9]}", app.handleDeleteUser).Methods("DELETE")
+	muxRouter.HandleFunc("/api/v1/users/{userID:[0-9]}", app.handleUpdateUser).Methods("PUT")
+
 	// Frontend HTML and related assets
 	if Version == "dev" {
 		// In dev mode, we proxy everything else to React's Webpack dev server

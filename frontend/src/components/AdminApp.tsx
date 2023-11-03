@@ -1,5 +1,5 @@
 "use client";
-import { Admin, Resource } from "react-admin";
+import { Admin, Resource, radiantDarkTheme } from "react-admin";
 import simpleRestProvider from "ra-data-simple-rest";
 import { TribesList, TribesCreate, TribesEdit, TribesShow } from "./tribes";
 import {
@@ -8,14 +8,47 @@ import {
   PlayersEdit,
   PlayersShow,
 } from "./players";
+import { EpisodesCreate, EpisodesList } from "./episodes";
+import { UsersList, UsersCreate, UsersEdit, UsersShow } from "./users";
+import { Home } from "./home";
 import FlagIcon from "@mui/icons-material/Flag";
 import GroupsIcon from "@mui/icons-material/Groups";
+import VideocamIcon from "@mui/icons-material/Videocam";
+import CustomLayout from "./CustomLayout";
 
 const dataProvider = simpleRestProvider("http://localhost:9090/api/v1"); // Adjust the URL to your backend's API endpoint.
 
+const theme = {
+  ...radiantDarkTheme,
+  palette: {
+    mode: "dark",
+  },
+  typography: {
+    fontFamily: ["Futura", "sans-serif"].join(","),
+  },
+  components: {
+    ...radiantDarkTheme.components,
+    MuiTextField: {
+      defaultProps: {
+        variant: "outlined" as const,
+      },
+    },
+    MuiFormControl: {
+      defaultProps: {
+        variant: "outlined" as const,
+      },
+    },
+  },
+};
+
 const AdminApp = () => {
   return (
-    <Admin dataProvider={dataProvider}>
+    <Admin
+      dataProvider={dataProvider}
+      theme={theme}
+      dashboard={Home}
+      layout={CustomLayout}
+    >
       <Resource
         icon={FlagIcon}
         name="tribes"
@@ -31,6 +64,20 @@ const AdminApp = () => {
         create={PlayersCreate}
         edit={PlayersEdit}
         show={PlayersShow}
+      />
+      <Resource
+        icon={VideocamIcon}
+        name="episodes"
+        list={EpisodesList}
+        create={EpisodesCreate}
+      />
+      <Resource
+        icon={GroupsIcon}
+        name="users"
+        list={UsersList}
+        create={UsersCreate}
+        edit={UsersEdit}
+        show={UsersShow}
       />
     </Admin>
   );

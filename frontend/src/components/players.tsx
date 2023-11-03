@@ -22,7 +22,6 @@ import {
 export const PlayersList = (props: any) => (
   <List {...props}>
     <Datagrid bulkActionButtons={false}>
-      <TextField source="id" />
       <TextField source="first_name" />
       <TextField source="last_name" />
       <NumberField source="age" />
