@@ -1,12 +1,16 @@
-import { NextPage } from "next";
-import AdminApp from "@/components/AdminApp";
-import dynamic from "next/dynamic";
+"use client";
 
-const DynamicAdminApp = dynamic(() => import("../components/AdminApp"), {
-  ssr: false,
-  loading: () => <p>Loading ...</p>,
-});
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
-const Home: NextPage = () => <DynamicAdminApp />;
+const HomePage = () => {
+  const router = useRouter();
 
-export default Home;
+  useEffect(() => {
+    router.push("/admin");
+  }, [router]);
+
+  return <div>Redirecting to admin...</div>;
+};
+
+export default HomePage;
