@@ -13,11 +13,34 @@ import (
 
 var Version = "dev"
 
+func corsMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Set CORS headers
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, Range")
+
+		// Expose Content-Range header for React Admin
+		w.Header().Set("Access-Control-Expose-Headers", "Content-Range")
+
+		// Preflight OPTIONS request handling
+		if r.Method == "OPTIONS" {
+			return
+		}
+
+		// Call the next handler
+		next.ServeHTTP(w, r)
+	})
+}
+
 func MakeMuxRouter(dbSes *dbr.Session) http.Handler {
 
 	app := &AppHandler{dbSes: dbSes}
 
 	muxRouter := mux.NewRouter()
+
+	// Apply the CORS middleware
+	muxRouter.Use(corsMiddleware)
 
 	// tribes
 	muxRouter.HandleFunc("/api/v1/tribes", app.handleGetTribes).Methods("GET")

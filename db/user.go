@@ -2,6 +2,7 @@ package db
 
 import (
 	"fmt"
+	"log"
 	"survivor_fantasy/model"
 
 	"github.com/gocraft/dbr"
@@ -13,21 +14,27 @@ func GetUsers(dbSes *dbr.Session) ([]model.User, error) {
 	rows, err := stmt.Rows()
 
 	if err != nil {
+		log.Println("Error getting users")
 		return nil, err
 	}
 
 	defer rows.Close()
 
 	for rows.Next() {
+		log.Println("Starting scan for user")
 		user := model.User{}
 		err = rows.Scan(
 			&user.ID,
-			&user.FirstName,
-			&user.LastName,
+			&user.Name,
 			&user.Email,
+			&user.EmailVerified,
+			&user.Image,
+			&user.IsAdmin,
 		)
 
 		if err != nil {
+			log.Println("Error with scan")
+			log.Println(err)
 			return nil, err
 		}
 
@@ -108,10 +115,9 @@ func DeleteUser(dbSes *dbr.Session, userID int64) error {
 
 func UpdateUser(dbSes *dbr.Session, user *model.User) error {
 	fields := map[string]interface{}{
-		"id":         user.ID,
-		"first_name": user.FirstName,
-		"last_name":  user.LastName,
-		"email":      user.Email,
+		"id":    user.ID,
+		"name":  user.Name,
+		"email": user.Email,
 	}
 
 	_, err := dbSes.Update("users").SetMap(fields).Where("id = ?", user.ID).Exec()

@@ -8,7 +8,7 @@ export const Home = (props: any) => {
   const [episodes, setEpisodes] = useState<Episode[]>([]);
 
   useEffect(() => {
-    fetch("/api/v1/players")
+    fetch("http://localhost:9090/api/v1/players")
       .then((res) => res.json())
       .then((data) => {
         setPlayers(data);
@@ -16,7 +16,7 @@ export const Home = (props: any) => {
   }, []);
 
   useEffect(() => {
-    fetch("/api/v1/episodes")
+    fetch("http://localhost:9090/api/v1/episodes")
       .then((res) => res.json())
       .then((data) => {
         setEpisodes(data);

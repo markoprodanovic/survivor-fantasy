@@ -9,7 +9,7 @@ import {
   PlayersShow,
 } from "./players";
 import { EpisodesCreate, EpisodesList } from "./episodes";
-import { UsersList, UsersCreate, UsersEdit, UsersShow } from "./users";
+import { UsersList, UsersEdit, UsersShow } from "./users";
 import { Home } from "./home";
 import FlagIcon from "@mui/icons-material/Flag";
 import GroupsIcon from "@mui/icons-material/Groups";
@@ -41,13 +41,13 @@ const theme = {
   },
 };
 
-const AdminApp = () => {
+const AdminApp = ({ user, ...props }) => {
   return (
     <Admin
       dataProvider={dataProvider}
       theme={theme}
       dashboard={Home}
-      layout={CustomLayout}
+      layout={(props) => <CustomLayout user={user} {...props} />}
     >
       <Resource
         icon={FlagIcon}
@@ -75,7 +75,6 @@ const AdminApp = () => {
         icon={GroupsIcon}
         name="users"
         list={UsersList}
-        create={UsersCreate}
         edit={UsersEdit}
         show={UsersShow}
       />

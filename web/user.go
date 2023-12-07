@@ -14,14 +14,18 @@ import (
 )
 
 func (app *AppHandler) handleGetUsersWithPicks(w http.ResponseWriter, r *http.Request) {
+	log.Println("Getting user with picks")
 	users, err := db.GetUsers(app.dbSes)
 	if err != nil {
+		log.Println("Error fetching users")
 		http.Error(w, "Error fetching users", http.StatusInternalServerError)
 		return
 	}
 
 	users_with_picks := []model.UserWithPicks{}
 	for _, user := range users {
+		log.Println("Checkpoint")
+		log.Println(user)
 		userID := user.ID
 		user_picks, err := db.GetUserPicks(app.dbSes, int64(userID))
 		if err != nil {
@@ -42,12 +46,14 @@ func (app *AppHandler) handleGetUsersWithPicks(w http.ResponseWriter, r *http.Re
 		}
 
 		user_with_picks := model.UserWithPicks{
-			ID:        userID,
-			FirstName: user.FirstName,
-			LastName:  user.LastName,
-			PlayerIDs: picks,
+			ID:            userID,
+			Name:          user.Name,
+			Email:         user.Email,
+			EmailVerified: user.EmailVerified,
+			Image:         user.Image,
+			IsAdmin:       user.IsAdmin,
+			PlayerIDs:     picks,
 		}
-
 		users_with_picks = append(users_with_picks, user_with_picks)
 	}
 
@@ -64,9 +70,8 @@ func (app *AppHandler) handleCreateUserWithPicks(w http.ResponseWriter, r *http.
 	}
 
 	user := model.User{
-		FirstName: user_with_picks.FirstName,
-		LastName:  user_with_picks.LastName,
-		Email:     user_with_picks.Email,
+		Name:  user_with_picks.Name,
+		Email: user_with_picks.Email,
 	}
 	err := db.CreateUser(app.dbSes, &user)
 	if err != nil {
@@ -143,10 +148,9 @@ func (app *AppHandler) handleUpdateUser(w http.ResponseWriter, r *http.Request) 
 	}
 
 	user := model.User{
-		ID:        givenUser.ID,
-		FirstName: givenUser.FirstName,
-		LastName:  givenUser.LastName,
-		Email:     givenUser.Email,
+		ID:    givenUser.ID,
+		Name:  givenUser.Name,
+		Email: givenUser.Email,
 	}
 
 	existingUser, err := db.GetUser(app.dbSes, user.ID)
