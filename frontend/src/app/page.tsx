@@ -8,7 +8,7 @@ const HomePage = async () => {
   if (!session?.user) {
     redirect("/api/auth/signin?callbackUrl=/");
   } else {
-    if (session.user.isAdmin) {
+    if (session.user.admin) {
       redirect("/admin");
     }
     redirect(`/dashboard/${session.user.id}`);

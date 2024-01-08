@@ -1,7 +1,7 @@
 package model
 
 type User struct {
-	ID            int64   `json:"id"`
+	ID            string  `json:"id"`
 	Name          string  `json:"name"`
 	Email         *string `json:"email"`
 	EmailVerified *string `json:"emailVerified"`
@@ -10,14 +10,14 @@ type User struct {
 }
 
 type UserPick struct {
-	ID       int64 `json:"id"`
-	UserID   int64 `json:"user_id"`
-	PlayerID int64 `json:"player_id"`
+	ID       int64  `json:"id"`
+	UserID   string `json:"user_id"`
+	PlayerID int64  `json:"player_id"`
 }
 
 // For API
 type UserWithPicks struct {
-	ID            int64   `json:"id"`
+	ID            string  `json:"id"`
 	Name          string  `json:"name"`
 	Email         *string `json:"email"`
 	EmailVerified *string `json:"emailVerified"`

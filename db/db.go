@@ -2,14 +2,14 @@ package db
 
 import (
 	"github.com/gocraft/dbr"
-	_ "github.com/lib/pq"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 var Session *dbr.Session
 
 func Initialize() (*dbr.Connection, error) {
-	connStr := "user=marko dbname=survivor_fantasy password=survivor host=localhost port=5434 sslmode=disable"
-	con, err := dbr.Open("postgres", connStr, nil)
+	connStr := "file:survivor_fantasy.db?cache=shared&mode=rwc"
+	con, err := dbr.Open("sqlite3", connStr, nil)
 	if err != nil {
 		return nil, err
 	}

@@ -1,26 +1,23 @@
 import NextAuth, { NextAuthConfig } from "next-auth";
 import GitHub from "next-auth/providers/github";
-import PostgresAdapter from "@auth/pg-adapter";
-import { Pool } from "pg";
-
-const pool = new Pool({
-  host: "localhost",
-  user: "marko",
-  password: "survivor",
-  database: "survivor_fantasy",
-  port: 5434,
-  max: 20,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
-});
+import { DrizzleAdapter } from "@auth/drizzle-adapter";
+import { users } from "@/db/schema/users";
+import { db } from "@/db";
 
 export const authConfig = {
-  adapter: PostgresAdapter(pool),
+  adapter: DrizzleAdapter(db),
   providers: [GitHub],
   callbacks: {
+    async signIn({ user, account, profile }) {
+      console.log("User from DB on signIn:", user);
+      return true;
+    },
     async session({ session, user }) {
+      const fullUser = db.select().from(users).get({ id: user.id });
+      console.log("database user:");
+
       session.user.id = user.id;
-      session.user.isAdmin = user.is_admin;
+      session.user.admin = fullUser.admin;
       return session;
     },
     authorized({ auth, request: { nextUrl } }) {

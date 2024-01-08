@@ -17,7 +17,6 @@ func (app *AppHandler) handleGetUsersWithPicks(w http.ResponseWriter, r *http.Re
 	log.Println("Getting user with picks")
 	users, err := db.GetUsers(app.dbSes)
 	if err != nil {
-		log.Println("Error fetching users")
 		http.Error(w, "Error fetching users", http.StatusInternalServerError)
 		return
 	}
@@ -27,7 +26,7 @@ func (app *AppHandler) handleGetUsersWithPicks(w http.ResponseWriter, r *http.Re
 		log.Println("Checkpoint")
 		log.Println(user)
 		userID := user.ID
-		user_picks, err := db.GetUserPicks(app.dbSes, int64(userID))
+		user_picks, err := db.GetUserPicks(app.dbSes, userID)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -97,12 +96,8 @@ func (app *AppHandler) handleCreateUserWithPicks(w http.ResponseWriter, r *http.
 
 func (app *AppHandler) handleGetOneUser(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	userID, err := strconv.Atoi(vars["userID"])
-	if err != nil {
-		http.Error(w, "Invalid user ID", http.StatusBadRequest)
-		return
-	}
-	user, err := db.GetUser(app.dbSes, int64(userID))
+	userID := vars["userID"]
+	user, err := db.GetUser(app.dbSes, userID)
 
 	if err == dbr.ErrNotFound {
 		http.Error(w, "User not found", http.StatusNotFound)
@@ -118,19 +113,15 @@ func (app *AppHandler) handleGetOneUser(w http.ResponseWriter, r *http.Request) 
 func (app *AppHandler) handleDeleteUser(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
-	userID, err := strconv.Atoi(vars["userID"])
-	if err != nil {
-		http.Error(w, "Invalid user ID", http.StatusBadRequest)
-		return
-	}
+	userID := vars["userID"]
 
-	_, err = db.GetUser(app.dbSes, int64(userID))
+	_, err := db.GetUser(app.dbSes, userID)
 	if err != nil {
 		http.Error(w, "User not found", http.StatusNotFound)
 		return
 	}
 
-	err = db.DeleteUser(app.dbSes, int64(userID))
+	err = db.DeleteUser(app.dbSes, userID)
 	if err != nil {
 		http.Error(w, "Error deleting user", http.StatusInternalServerError)
 	}

@@ -9,11 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@auth/drizzle-adapter": "^0.3.11",
     "@auth/pg-adapter": "^0.2.7",
+    "@libsql/client": "^0.4.0-pre.5",
     "@material-ui/core": "^4.12.4",
     "@material-ui/icons": "^4.11.3",
     "@mui/icons-material": "^5.14.15",
     "@types/prop-types": "^15.7.9",
+    "better-sqlite3": "^9.2.2",
+    "drizzle-orm": "^0.29.3",
     "next": "14.0.1",
     "next-auth": "^5.0.0-beta.4",
     "pg": "^8.11.3",
@@ -30,6 +34,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10",
+    "drizzle-kit": "^0.20.9",
     "eslint": "^8",
     "eslint-config-next": "14.0.0",
     "postcss": "^8",

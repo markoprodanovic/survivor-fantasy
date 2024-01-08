@@ -8,6 +8,8 @@ const CustomLogoutButton = React.forwardRef((props, ref) => {
   const { onClose } = useUserMenu();
 
   return (
+    // FIXME Hacky way to get TS to calm down
+    // @ts-ignore
     <MenuItem
       onClick={() => {
         onClose();

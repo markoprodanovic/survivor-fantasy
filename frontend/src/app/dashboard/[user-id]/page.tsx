@@ -8,6 +8,8 @@ const UserDashboard = async () => {
   if (!session?.user) {
     redirect("/api/auth/signin");
   }
+
+  console.log(session.user);
   return <div>UserDashboard</div>;
 };
 

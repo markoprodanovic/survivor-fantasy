@@ -10,7 +10,7 @@ import (
 
 func GetUsers(dbSes *dbr.Session) ([]model.User, error) {
 	var users []model.User
-	stmt := dbSes.Select("*").From("users")
+	stmt := dbSes.Select("*").From("user")
 	rows, err := stmt.Rows()
 
 	if err != nil {
@@ -44,7 +44,7 @@ func GetUsers(dbSes *dbr.Session) ([]model.User, error) {
 	return users, err
 }
 
-func GetUserPicks(dbSes *dbr.Session, userID int64) ([]model.UserPick, error) {
+func GetUserPicks(dbSes *dbr.Session, userID string) ([]model.UserPick, error) {
 	var user_picks []model.UserPick
 	stmt := dbSes.Select("*").From("user_picks").Where("user_id = ?", userID)
 	rows, err := stmt.Rows()
@@ -91,7 +91,7 @@ func CreateUserPick(dbSes *dbr.Session, user_pick *model.UserPick) error {
 	return err
 }
 
-func GetUser(dbSes *dbr.Session, userID int64) (model.User, error) {
+func GetUser(dbSes *dbr.Session, userID string) (model.User, error) {
 	var user model.User
 	stmt := dbSes.Select("*").From("users").Where("id = ?", userID)
 	err := stmt.LoadOne(&user)
@@ -102,7 +102,7 @@ func GetUser(dbSes *dbr.Session, userID int64) (model.User, error) {
 	return user, err
 }
 
-func DeleteUser(dbSes *dbr.Session, userID int64) error {
+func DeleteUser(dbSes *dbr.Session, userID string) error {
 
 	_, err := dbSes.DeleteFrom("users").Where("id = ?", userID).Exec()
 

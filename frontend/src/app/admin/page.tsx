@@ -17,7 +17,7 @@ const Admin: NextPage = async () => {
     redirect("/api/auth/signin");
   }
 
-  if (!session.user.isAdmin) {
+  if (!session.user.admin) {
     redirect(`/dashboard/${session.user.id}`);
   }
   return <DynamicAdminApp user={session.user} />;
