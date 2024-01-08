@@ -2,6 +2,7 @@ package db
 
 import (
 	"fmt"
+	"log"
 	"survivor_fantasy/model"
 
 	"github.com/gocraft/dbr"
@@ -41,6 +42,7 @@ func GetEpisode(dbSes *dbr.Session, episodeID int64) (model.Episode, error) {
 	stmt := dbSes.Select("*").From("episodes").Where("id = ?", episodeID)
 	err := stmt.LoadOne(&episode)
 	if err != nil {
+		log.Println(err)
 		return episode, err
 	}
 

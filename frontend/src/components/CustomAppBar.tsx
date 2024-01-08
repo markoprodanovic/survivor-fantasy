@@ -3,6 +3,7 @@ import { AppBar, UserMenu, useUserMenu } from "react-admin";
 import { MenuItem, ListItemIcon, ListItemText } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Avatar from "@mui/material/Avatar";
+import { signOut } from "next-auth/react";
 
 const CustomLogoutButton = React.forwardRef((props, ref) => {
   const { onClose } = useUserMenu();
@@ -13,9 +14,7 @@ const CustomLogoutButton = React.forwardRef((props, ref) => {
     <MenuItem
       onClick={() => {
         onClose();
-        // FIXME This is kind of whacky. There should be better ways to handle signout
-        // without needing to use React Admin's login page.
-        window.location.href = "/api/auth/signout";
+        signOut({ callbackUrl: "/" });
       }}
       ref={ref}
       // It's important to pass the props to allow Material UI to manage the keyboard navigation

@@ -1,5 +1,3 @@
-// "use client";
-
 import { NextPage } from "next";
 import dynamic from "next/dynamic";
 import { auth } from "../../auth";
@@ -12,6 +10,9 @@ const DynamicAdminApp = dynamic(() => import("../../components/AdminApp"), {
 
 const Admin: NextPage = async () => {
   const session = await auth();
+
+  console.log("User Session:");
+  console.log(session.user);
 
   if (!session?.user) {
     redirect("/api/auth/signin");

@@ -30,7 +30,6 @@ const TotalPointsTable = ({ players, episodes }: TotalPointsTableProps) => {
 
     const pTotalPoints: PlayerTotalPoints[] = [];
     players.forEach((player) => {
-      console.log(player);
       const playerPoints = pointsList.filter((x) => x.castId === player.id);
       let totalPoints = 0;
       if (playerPoints.length !== 0) {
