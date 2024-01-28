@@ -34,7 +34,6 @@ func corsMiddleware(next http.Handler) http.Handler {
 }
 
 func MakeMuxRouter(dbSes *dbr.Session) http.Handler {
-
 	app := &AppHandler{dbSes: dbSes}
 
 	muxRouter := mux.NewRouter()
@@ -66,7 +65,7 @@ func MakeMuxRouter(dbSes *dbr.Session) http.Handler {
 	// users
 	muxRouter.HandleFunc("/api/v1/users", app.handleGetUsersWithPicks).Methods("GET")
 	muxRouter.HandleFunc("/api/v1/users", app.handleCreateUserWithPicks).Methods("POST")
-	muxRouter.HandleFunc("/api/v1/users/{userID:[0-9]}", app.handleGetOneUser).Methods("GET")
+	muxRouter.HandleFunc("/api/v1/users/{userID:[a-fA-F0-9\\-]{36}}", app.handleGetOneUser).Methods("GET")
 	muxRouter.HandleFunc("/api/v1/users/{userID:[0-9]}", app.handleDeleteUser).Methods("DELETE")
 	muxRouter.HandleFunc("/api/v1/users/{userID:[0-9]}", app.handleUpdateUser).Methods("PUT")
 

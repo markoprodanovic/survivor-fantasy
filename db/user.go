@@ -12,7 +12,6 @@ func GetUsers(dbSes *dbr.Session) ([]model.User, error) {
 	var users []model.User
 	stmt := dbSes.Select("*").From("user")
 	rows, err := stmt.Rows()
-
 	if err != nil {
 		log.Println("Error getting users")
 		return nil, err
@@ -48,7 +47,6 @@ func GetUserPicks(dbSes *dbr.Session, userID string) ([]model.UserPick, error) {
 	var user_picks []model.UserPick
 	stmt := dbSes.Select("*").From("user_picks").Where("user_id = ?", userID)
 	rows, err := stmt.Rows()
-
 	if err != nil {
 		return nil, err
 	}
@@ -74,7 +72,6 @@ func GetUserPicks(dbSes *dbr.Session, userID string) ([]model.UserPick, error) {
 }
 
 func CreateUser(dbSes *dbr.Session, user *model.User) error {
-
 	insertColumns := []string{"first_name", "last_name", "email"}
 
 	err := dbSes.InsertInto("users").Columns(insertColumns...).Record(user).Returning("id").Load(&user.ID)
@@ -83,7 +80,6 @@ func CreateUser(dbSes *dbr.Session, user *model.User) error {
 }
 
 func CreateUserPick(dbSes *dbr.Session, user_pick *model.UserPick) error {
-
 	insertColumns := []string{"user_id", "player_id"}
 
 	err := dbSes.InsertInto("user_picks").Columns(insertColumns...).Record(user_pick).Returning("id").Load(&user_pick.ID)
@@ -93,7 +89,7 @@ func CreateUserPick(dbSes *dbr.Session, user_pick *model.UserPick) error {
 
 func GetUser(dbSes *dbr.Session, userID string) (model.User, error) {
 	var user model.User
-	stmt := dbSes.Select("*").From("users").Where("id = ?", userID)
+	stmt := dbSes.Select("*").From("user").Where("id = ?", userID)
 	err := stmt.LoadOne(&user)
 	if err != nil {
 		return user, err
@@ -103,9 +99,7 @@ func GetUser(dbSes *dbr.Session, userID string) (model.User, error) {
 }
 
 func DeleteUser(dbSes *dbr.Session, userID string) error {
-
 	_, err := dbSes.DeleteFrom("users").Where("id = ?", userID).Exec()
-
 	if err != nil {
 		return fmt.Errorf("couldn't delete %v from user table: %v", userID, err)
 	}

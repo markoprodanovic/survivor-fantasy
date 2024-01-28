@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Player } from "../../types/Player";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -19,34 +19,32 @@ interface TotalPointsTableProps {
   episodes: Episode[];
 }
 
+const getPlayersTotalPoints = (players: Player[], episodes: Episode[]) => {
+  const pointsList = episodes.map((x) => x.points).flat();
+
+  const pTotalPoints: PlayerTotalPoints[] = [];
+  players.forEach((player) => {
+    const playerPoints = pointsList.filter((x) => x.castId === player.id);
+    let totalPoints = 0;
+    if (playerPoints.length !== 0) {
+      totalPoints = playerPoints
+        .map((x) => x.points)
+        .reduce((total, curr) => total + curr);
+    }
+    pTotalPoints.push({
+      playerName: `${player.first_name} ${player.last_name}`,
+      totalPoints: totalPoints,
+    });
+  });
+  pTotalPoints.sort((a, b) => {
+    return b.totalPoints - a.totalPoints;
+  });
+  return pTotalPoints;
+};
+
 const TotalPointsTable = ({ players, episodes }: TotalPointsTableProps) => {
-  const [playersTotalPoints, setPlayersTotalPoints] = useState<
-    PlayerTotalPoints[]
-  >([]);
+  const playersTotalPoints = getPlayersTotalPoints(players, episodes);
 
-  useEffect(() => {
-    if (players.length === 0 || episodes.length === 0) return;
-    const pointsList = episodes.map((x) => x.points).flat();
-
-    const pTotalPoints: PlayerTotalPoints[] = [];
-    players.forEach((player) => {
-      const playerPoints = pointsList.filter((x) => x.castId === player.id);
-      let totalPoints = 0;
-      if (playerPoints.length !== 0) {
-        totalPoints = playerPoints
-          .map((x) => x.points)
-          .reduce((total, curr) => total + curr);
-      }
-      pTotalPoints.push({
-        playerName: `${player.first_name} ${player.last_name}`,
-        totalPoints: totalPoints,
-      });
-    });
-    pTotalPoints.sort((a, b) => {
-      return b.totalPoints - a.totalPoints;
-    });
-    setPlayersTotalPoints(pTotalPoints);
-  }, [players, episodes]);
   return (
     <div className="w1/4 mx-auto">
       <h3>Total Points</h3>
