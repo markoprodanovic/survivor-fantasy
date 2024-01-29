@@ -3,7 +3,7 @@ import { AppBar, UserMenu, useUserMenu } from "react-admin";
 import { MenuItem, ListItemIcon, ListItemText } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Avatar from "@mui/material/Avatar";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 const CustomLogoutButton = React.forwardRef((props, ref) => {
   const { onClose } = useUserMenu();
@@ -39,13 +39,15 @@ const CustomProfileIcon = ({ image }) => (
   />
 );
 
-const CustomAppBar = ({ user }) => {
+const CustomAppBar = () => {
+  const { data: session } = useSession();
+
   return (
     <AppBar
       color="primary"
       position="fixed"
       userMenu={
-        <UserMenu icon={<CustomProfileIcon image={user.image} />}>
+        <UserMenu icon={<CustomProfileIcon image={session.user.image} />}>
           <CustomLogoutButton />
         </UserMenu>
       }

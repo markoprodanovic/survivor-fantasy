@@ -5,11 +5,7 @@ import CustomMenu from "./CustomMenu";
 import CustomAppBar from "./CustomAppBar";
 
 const CustomLayout = (props: any) => (
-  <Layout
-    {...props}
-    menu={CustomMenu}
-    appBar={() => <CustomAppBar user={props.user} />}
-  />
+  <Layout {...props} menu={CustomMenu} appBar={() => <CustomAppBar />} />
 );
 
 export default CustomLayout;

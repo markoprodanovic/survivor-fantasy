@@ -11,8 +11,6 @@ export const authConfig = {
   providers: [GitHub, Google],
   callbacks: {
     async session({ session, token }) {
-      console.log("Session token: ", token);
-
       if (session.user && token.sub) {
         session.user.id = token.sub;
       }

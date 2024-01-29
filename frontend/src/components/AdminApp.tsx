@@ -41,13 +41,14 @@ const theme = {
   },
 };
 
-const AdminApp = ({ user, ...props }) => {
+const AdminApp = (props: any) => {
+  console.log("AdminApp is rendering...");
   return (
     <Admin
       dataProvider={dataProvider}
       theme={theme}
       dashboard={Home}
-      layout={(props) => <CustomLayout user={user} {...props} />}
+      layout={(props) => <CustomLayout {...props} />}
     >
       <Resource
         icon={FlagIcon}
