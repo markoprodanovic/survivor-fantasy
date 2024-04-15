@@ -69,6 +69,9 @@ func MakeMuxRouter(dbSes *dbr.Session) http.Handler {
 	muxRouter.HandleFunc("/api/v1/users/{userID:[0-9]}", app.handleDeleteUser).Methods("DELETE")
 	muxRouter.HandleFunc("/api/v1/users/{userID:[0-9]}", app.handleUpdateUser).Methods("PUT")
 
+	// picks
+	muxRouter.HandleFunc("/api/v1/users/{userID:[a-fA-F0-9\\-]{36}}/picks", app.handleCreateUserPicks).Methods("POST")
+
 	// Frontend HTML and related assets
 	if Version == "dev" {
 		// In dev mode, we proxy everything else to React's Webpack dev server

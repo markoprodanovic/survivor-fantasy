@@ -42,6 +42,7 @@ const UserDashboard = async ({
       <div className="w-3/4">
         <TotalPointsTable players={players} episodes={episodes} />
       </div>
+      <div>{JSON.stringify(players)}</div>
     </div>
   );
 };

@@ -107,6 +107,15 @@ func DeleteUser(dbSes *dbr.Session, userID string) error {
 	return err
 }
 
+func DeleteUserPicks(dbSes *dbr.Session, userID string) error {
+	_, err := dbSes.DeleteFrom("user_picks").Where("user_id = ?", userID).Exec()
+	if err != nil {
+		return fmt.Errorf("couldn't delete picks for user: %v from user_picks table: %v", userID, err)
+	}
+
+	return err
+}
+
 func UpdateUser(dbSes *dbr.Session, user *model.User) error {
 	fields := map[string]interface{}{
 		"id":    user.ID,
